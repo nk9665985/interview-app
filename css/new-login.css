@@ -1,0 +1,314 @@
+/* Simple Professional Login - Full Page Background, No Half Image */
+
+:root {
+  --primary: #1e40af;
+  --primary-dark: #1e3a8a;
+  --success: #059669;
+  --danger: #dc2626;
+  --bg-primary: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+  --card-bg: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --shadow: 0 10px 30px rgba(0,0,0,0.1);
+  --shadow-hover: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: 
+    linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%),
+    url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M40 20c-8.837 0-16 7.163-16 16s7.163 16 16 16 16-7.163 16-16-7.163-16-16-16zm0 28c-6.627 0-12-5.373-12-12s5.373-12 12-12 12 5.373 12 12-5.373 12-12 12z'/%3E%3Ccircle cx='40' cy='40' r='8'/%3E%3Cpath d='M78 40c0-8.837-7.163-16-16-16S46 31.163 46 40s7.163 16 16 16 16-7.163 16-16zM40 62c-8.837 0-16-7.163-16-16S31.163 30 40 30s16 7.163 16 16-7.163 16-16 16z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-size: cover, 80px 80px;
+  background-blend-mode: overlay;
+  color: #f1f5f9;
+  min-height: 100vh;
+}
+
+.form-container {
+  background: rgba(255,255,255,0.95);
+  color: var(--text-primary);
+  backdrop-filter: blur(10px);
+  padding: 50px 40px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+}
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.login-form-section {
+  width: 100%;
+  max-width: 450px;
+}
+
+.form-container {
+  background: var(--card-bg);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.form-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.form-header p {
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  font-size: 18px;
+  z-index: 1;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 16px 16px 16px 48px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: #f8fafc;
+}
+
+.input-wrapper input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(30,64,175,0.1);
+}
+
+.input-wrapper input::placeholder {
+  color: var(--text-secondary);
+}
+
+.toggle-password {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.toggle-password:hover {
+  color: var(--primary);
+}
+
+.role-selection {
+  margin-top: 8px;
+}
+
+.role-selection > label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.role-cards {
+  display: flex;
+  gap: 12px;
+}
+
+.role-card-new {
+  flex: 1;
+}
+
+.role-card-new input {
+  display: none;
+}
+
+.role-card-new > div:first-of-type {
+  padding: 20px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #f8fafc;
+}
+
+.role-card-new:hover > div:first-of-type {
+  border-color: var(--primary);
+}
+
+.role-card-new input:checked + div {
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(30,64,175,0.1);
+}
+
+.role-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.role-icon {
+  font-size: 24px;
+}
+
+.role-info .role-name {
+  font-weight: 700;
+  color: var(--text-primary);
+  display: block;
+}
+
+.role-info .role-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.check-mark {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  background: var(--primary);
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.3s ease;
+}
+
+.role-card-new input:checked ~ .check-mark {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.submit-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.submit-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.btn-arrow {
+  transition: transform 0.3s ease;
+}
+
+.submit-btn:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+.switch-auth {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 15px;
+  margin-top: 20px;
+}
+
+.switch-auth a {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.switch-auth a:hover {
+  text-decoration: underline;
+}
+
+.form-footer {
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.role-card-new.checked > div:first-of-type {
+  border-color: var(--primary);
+  background: white;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .form-container {
+    padding: 32px 24px;
+    margin: 0 12px;
+  }
+  
+  .role-cards {
+    flex-direction: column;
+  }
+  
+  body::before {
+    background-image: none;
+  }
+}

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Take Test - Interview App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="test-container">
+    <!-- Test Header -->
+    <header class="test-header">
+      <div class="test-logo">
+<h2>Interview App</h2>
+      </div>
+
+      <div class="test-timer">
+        <span class="timer-icon">⏱️</span>
+        <span class="timer-value" id="timerValue">30:00</span>
+      </div>
+
+      <div class="progress-info">
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progressBar" style="width: 0%"></div>
+        </div>
+        <span class="progress-text" id="progressText">0/10</span>
+      </div>
+
+      <button class="logout-btn" onclick="logout()" style="width: auto; padding: 10px 20px;">
+        <span>🚪</span>
+        <span>Exit</span>
+      </button>
+    </header>
+
+    <!-- Category Selection -->
+    <div class="test-body" id="categorySelect">
+      <div class="category-select">
+        <h2>Choose a Category</h2>
+        <p>Select the type of interview questions you want to practice</p>
+        
+        <div class="category-grid">
+          <div class="category-card" onclick="startTest('Technical')">
+            <div class="category-icon">💻</div>
+            <h3>Technical</h3>
+            <p>Programming, databases, APIs</p>
+          </div>
+          <div class="category-card" onclick="startTest('HR')">
+            <div class="category-icon">👔</div>
+            <h3>HR</h3>
+            <p>Behavioral & personal questions</p>
+          </div>
+          <div class="category-card" onclick="startTest('Aptitude')">
+            <div class="category-icon">🧮</div>
+            <h3>Aptitude</h3>
+            <p>Logical & quantitative reasoning</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question Container -->
+    <div class="test-body question-container" id="questionContainer">
+      <span id="testCategory" style="display:none;"></span>
+      <div class="question-header">
+        <span class="question-number" id="questionNumber">Question 1 of 10</span>
+        <span class="question-difficulty difficulty-medium" id="questionDifficulty">medium</span>
+      </div>
+
+      <h3 class="question-text" id="questionText">Loading question...</h3>
+
+      <div class="options-list" id="optionsContainer">
+        <!-- Options will be dynamically inserted -->
+      </div>
+
+      <div class="question-nav">
+        <button class="nav-btn secondary" id="prevBtn" onclick="prevQuestion()" style="visibility: hidden;">
+          ← Previous
+        </button>
+        <button class="nav-btn primary" id="nextBtn" onclick="nextQuestion()">
+          Next →
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Container -->
+    <div class="results-container" id="resultsContainer" style="display: none;">
+      <div class="results-icon" id="resultIcon">🎉</div>
+      <h1 id="resultMessage">Great Job!</h1>
+      <div class="results-score" id="scorePercentage">80%</div>
+      
+      <div class="results-details">
+        <div class="detail-item">
+          <h4>Correct Answers</h4>
+          <p id="scoreCorrect">8</p>
+        </div>
+        <div class="detail-item">
+          <h4>Total Questions</h4>
+          <p id="scoreTotal">10</p>
+        </div>
+        <div class="detail-item">
+          <h4>Time Taken</h4>
+          <p id="scoreTime">15m 30s</p>
+        </div>
+      </div>
+
+      <div class="results-actions">
+        <button class="primary-btn" onclick="retakeTest()">Take Another Test</button>
+        <button class="secondary-btn" onclick="window.location.href='dashboard.html'">Go to Dashboard</button>
+      </div>
+    </div>
+
+    <!-- History View -->
+    <div class="test-body" id="historyView" style="display: none;">
+      <div class="page-header">
+        <h1>Test History</h1>
+        <p>View all your previous test attempts</p>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Test ID</th>
+              <th>Category</th>
+              <th>Score</th>
+              <th>Time Taken</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody">
+            <!-- Will be populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <button class="nav-btn secondary" onclick="window.location.href='dashboard.html'">
+          ← Back to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Check if showing history
+    const urlParams = new URLSearchParams(window.location.search);
+    const viewHistory = urlParams.get('view') === 'history';
+
+    if (viewHistory) {
+      document.getElementById('categorySelect').style.display = 'none';
+      document.getElementById('historyView').style.display = 'block';
+      loadHistoryView();
+    }
+
+    async function loadHistoryView() {
+      try {
+        const user = getUser();
+        const results = await apiRequest(`/results/user/${user.id}`);
+        const tbody = document.getElementById('historyTableBody');
+        
+        if (results.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-secondary);">No tests taken yet</td></tr>';
+          return;
+        }
+        
+        tbody.innerHTML = results.map(result => {
+          const percentage = Math.round((result.score / result.total_questions) * 100);
+          let scoreClass = 'low';
+          if (percentage >= 80) scoreClass = 'high';
+          else if (percentage >= 60) scoreClass = 'medium';
+          
+          const minutes = Math.floor(result.time_taken / 60);
+          const seconds = result.time_taken % 60;
+          
+          return `
+            <tr>
+              <td>#${result.id}</td>
+              <td>${result.category}</td>
+              <td class="score-cell ${scoreClass}">${result.score}/${result.total_questions} (${percentage}%)</td>
+              <td>${minutes}m ${seconds}s</td>
+              <td>${new Date(result.created_at).toLocaleDateString()}</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (error) {
+        console.error('Error loading history:', error);
+      }
+    }
+  </script>
+</body>
+</html>
